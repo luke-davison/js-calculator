@@ -1,15 +1,18 @@
-document.addEventListener('DOMContentLoaded', loadPage)
+document.addEventListener('DOMContentLoaded', addEventListeners)
+
+//tracks whether the calculator is currently displaying a result
 var calculated = false;
 
-function loadPage() {
+//assigns event listeners to all buttons
+function addEventListeners() {
   var buttons = document.getElementsByClassName("button");
   for (var i = 0; i < buttons.length; i ++) {
     buttons[i].addEventListener('click', pressButton)
   }
 }
 
+//runs appropriate function depending on what button was pushed
 function pressButton(btn) {
-  console.log(btn.target.id);
   switch (btn.target.id) {
     case "btn-ac":
       pressClearButton("all");
@@ -166,10 +169,11 @@ function calculateFormula() {
       }
     }
   }
+  //if the answer is too long
   if (runningTotal >= 1000000000) {
-    console.log("hi");
     runningTotal = 0;
   }
+  //if the answer is not a whole number
   if (runningTotal != round(runningTotal)) {
     runningTotal = round(runningTotal);
   }
@@ -177,8 +181,9 @@ function calculateFormula() {
   calculated = true;
 }
 
+//adds commas to the input so it could be read easier
 function adjustCommas() {
-  //this doesn't work for decimal numbers
+  //this failed to work for decimal numbers so I decided it probably was better not to have
   /*var inputStr = document.getElementsByClassName("input-screen")[0].innerHTML
   inputStr = inputStr.replace(/,/g,"");
   for (var i = 1; i < inputStr.length; i++) {
@@ -189,9 +194,8 @@ function adjustCommas() {
   document.getElementsByClassName("input-screen")[0].innerHTML = inputStr;*/
 }
 
+//rounds the number to 9 significant figures
 function round(value) {
-  console.log(String(Math.round(Math.abs(value))),String(Math.round(Math.abs(value))).length);
   var decimals = 9 - String(Math.round(Math.abs(value))).length
-  console.log(decimals)
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
